@@ -43,6 +43,7 @@ public class StudentManagement extends JFrame {
         mainPanel.setLayout(new BorderLayout(0,15));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(PRIMARY_COLOR);
+
         // Oberpanel(input , button)
         JPanel topPanel = new JPanel(new BorderLayout(0,8));
         topPanel.setBackground(Color.WHITE);
@@ -70,7 +71,7 @@ public class StudentManagement extends JFrame {
 
         topPanel.add(inputPanel , BorderLayout.NORTH);
 
-        // panel von Tasten
+        // Panel von Tasten
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         buttonPanel.setBackground(new Color(253, 253, 253));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -106,6 +107,7 @@ public class StudentManagement extends JFrame {
                         BorderFactory.createLineBorder(new Color(252, 252, 252), 1),
                         BorderFactory.createEmptyBorder(8, 8, 8, 8)
         ));
+
         // Scrollen für Anzeigebereich
         JScrollPane scrollPane = new JScrollPane(displayArea);
         scrollPane.setBorder(BorderFactory.createCompoundBorder(
@@ -119,7 +121,7 @@ public class StudentManagement extends JFrame {
         add(mainPanel);
     }
 
-    // Methode zum Stylen von Komponenten
+    //   Methode zum Stylen von Komponenten
     private JLabel createStyledLabel(String text, Color color, Font font) {
         // Erstellt ein stilisiertes Label
         JLabel label = new JLabel(text);
@@ -127,7 +129,7 @@ public class StudentManagement extends JFrame {
         label.setFont(font);
         return label;
     }
-    // Erstellt ein stilisiertes Textfeld
+    //   Erstellt ein stilisiertes Textfeld
     private JTextField createStyledTextField(Font font) {
         JTextField field = new JTextField();
         field.setFont(font);
@@ -138,7 +140,7 @@ public class StudentManagement extends JFrame {
         field.setBackground(Color.WHITE);
         return field;
     }
-    // Erstellt einen stilisierten Button
+    //   Erstellt einen stilisierten Button
     private JButton createStyledButton(String text, Color bgColor, Font font) {
         JButton button = new JButton(text);
         button.setFont(font);
@@ -149,12 +151,11 @@ public class StudentManagement extends JFrame {
         return button;
     }
 
-    // Methode zum Hinzüfugen der Beispiele
+    //   Methode zum Hinzüfugen der Beispiele
     private void addSampleData() {
         students.add(new Student(1, "Ali Rezaei", 20));
-        students.add(new Student(2, "Sara Mohammadi", 22));
     }
-    // Hauptmethoden :
+    //   Hauptmethoden :
     private void saveToFile() {
         // Speichert die Daten in einer Datei
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
@@ -165,6 +166,7 @@ public class StudentManagement extends JFrame {
             }
             writer.flush(); // اطمینان از نوشتن همه داده‌ها
             JOptionPane.showMessageDialog(this, "Data saved successfully to " + DATA_FILE);
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
         }
@@ -172,9 +174,7 @@ public class StudentManagement extends JFrame {
     // Lädt die Daten aus einer Datei
     private void loadFromFile() {
         File file = new File(DATA_FILE);
-        if (!file.exists()) {
-            return;
-        }
+        if (!file.exists())  return;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
             students.clear();
@@ -194,6 +194,7 @@ public class StudentManagement extends JFrame {
             }
             refreshDisplay();
             JOptionPane.showMessageDialog(this, "Data loaded successfully from " + DATA_FILE);
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
         }
@@ -267,23 +268,45 @@ public class StudentManagement extends JFrame {
                     JOptionPane.showMessageDialog(this, "Student with ID " + id + " not found!");
                 }
             }
+            
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid number for ID!");
         }
     }
 
+    // Aktualisiert die Anzeige mit allen Studenten
+    private void refreshDisplay() {
+        if (students.isEmpty()) {
+            displayArea.setText("No students available.");
+            return;
+        }
+        /* sb ist hier wie ein Fabrik von String */
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Total students : %d\n\n", students.size()));
+        sb.append(String.format("%-5s %-20s %-5s\n", "ID", "Name", "Age"));
+        sb.append("----------------------------------------\n");
 
+        for (Student student : students) {
+            sb.append(String.format("%-5d %-20s %-5d\n",
+                    student.id, student.name, student.age));
+        }
 
-
-
-
-
-
-
-
-
-
-
+        displayArea.setText(sb.toString());
+    }
+    // Löscht die Eingabefelder
+    private void clearFields() {
+        idField.setText("");
+        nameField.setText("");
+        ageField.setText("");
+        idField.requestFocus();
+    }
+    // Hauptmethode zum Starten
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            StudentManagement gui = new StudentManagement();
+            gui.setVisible(true);
+        });
+    }
     // Innerliche Klasse für Student
     private static class Student {
         int id;
