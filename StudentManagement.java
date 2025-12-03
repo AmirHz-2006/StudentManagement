@@ -3,7 +3,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
-
 // Hauptklasse für das GUI-Fenster
 public class StudentManagement extends JFrame {
     private List<Student> students;
@@ -22,7 +21,6 @@ public class StudentManagement extends JFrame {
     // Schriftarten
     private final Font mainFont = new Font("Segoe UI", Font.PLAIN, 13);
     private final Font titleFont = new Font("Segoe UI", Font.BOLD, 14);
-
     // Konstruktor
     public StudentManagement() {
         students = new ArrayList<>();
@@ -43,7 +41,6 @@ public class StudentManagement extends JFrame {
         mainPanel.setLayout(new BorderLayout(0,15));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(PRIMARY_COLOR);
-
         // Oberpanel(input , button)
         JPanel topPanel = new JPanel(new BorderLayout(0,8));
         topPanel.setBackground(Color.WHITE);
@@ -107,7 +104,6 @@ public class StudentManagement extends JFrame {
                         BorderFactory.createLineBorder(new Color(252, 252, 252), 1),
                         BorderFactory.createEmptyBorder(8, 8, 8, 8)
         ));
-
         // Scrollen für Anzeigebereich
         JScrollPane scrollPane = new JScrollPane(displayArea);
         scrollPane.setBorder(BorderFactory.createCompoundBorder(
@@ -119,9 +115,15 @@ public class StudentManagement extends JFrame {
         mainPanel.add(scrollPane , BorderLayout.CENTER);
         // Einbauen von Hauptpanel dem Hauptfenster
         add(mainPanel);
+
+        // Fügt Beispieldaten hinzu
+        if (students.isEmpty()) {
+            addSampleData();
+        }
+        refreshDisplay();
     }
 
-    //   Methode zum Stylen von Komponenten
+    // Methode zum Stylen von Komponenten
     private JLabel createStyledLabel(String text, Color color, Font font) {
         // Erstellt ein stilisiertes Label
         JLabel label = new JLabel(text);
@@ -129,7 +131,7 @@ public class StudentManagement extends JFrame {
         label.setFont(font);
         return label;
     }
-    //   Erstellt ein stilisiertes Textfeld
+    // Erstellt ein stilisiertes Textfeld
     private JTextField createStyledTextField(Font font) {
         JTextField field = new JTextField();
         field.setFont(font);
@@ -140,7 +142,7 @@ public class StudentManagement extends JFrame {
         field.setBackground(Color.WHITE);
         return field;
     }
-    //   Erstellt einen stilisierten Button
+    // Erstellt einen stilisierten Button
     private JButton createStyledButton(String text, Color bgColor, Font font) {
         JButton button = new JButton(text);
         button.setFont(font);
@@ -151,11 +153,11 @@ public class StudentManagement extends JFrame {
         return button;
     }
 
-    //   Methode zum Hinzüfugen der Beispiele
+    // Methode zum Hinzüfugen der Beispiele
     private void addSampleData() {
         students.add(new Student(1, "Ali Rezaei", 20));
     }
-    //   Hauptmethoden :
+    // Hauptmethoden:
     private void saveToFile() {
         // Speichert die Daten in einer Datei
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
@@ -199,7 +201,6 @@ public class StudentManagement extends JFrame {
             JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
         }
     }
-
     // Fügt einen neuen Studenten hinzu
     private void addStudent() {
         String idText = idField.getText().trim();
@@ -258,7 +259,7 @@ public class StudentManagement extends JFrame {
                     "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
             if (response == JOptionPane.YES_OPTION) {
-                boolean removed = students.removeIf(student -> student.id == id);  // تغییر به ==
+                boolean removed = students.removeIf(student -> student.id == id);
 
                 if (removed) {
                     refreshDisplay();
@@ -268,12 +269,11 @@ public class StudentManagement extends JFrame {
                     JOptionPane.showMessageDialog(this, "Student with ID " + id + " not found!");
                 }
             }
-            
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid number for ID!");
         }
     }
-
     // Aktualisiert die Anzeige mit allen Studenten
     private void refreshDisplay() {
         if (students.isEmpty()) {
@@ -304,17 +304,17 @@ public class StudentManagement extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             StudentManagement gui = new StudentManagement();
-            gui.setVisible(true);
+            gui.setVisible(true); 
         });
     }
-    // Innerliche Klasse für Student
+
     private static class Student {
         int id;
         String name;
         int age;
 
         Student(int id, String name, int age) {
-            this.id = id;
+            this.id = id; 
             this.name = name;
             this.age = age;
         }
