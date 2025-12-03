@@ -149,6 +149,56 @@ public class StudentManagement extends JFrame {
         return button;
     }
 
+    // Methode zum Hinzüfugen der Beispiele
+    private void addSampleData() {
+        students.add(new Student(1, "Ali Rezaei", 20));
+        students.add(new Student(2, "Sara Mohammadi", 22));
+    }
+    // Hauptmethoden :
+    private void saveToFile() {
+        // Speichert die Daten in einer Datei
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
+            for (Student student : students) {
+                String line = student.id + "," + student.name + "," + student.age;
+                writer.write(line);    // نوشتن خط
+                writer.newLine();      // رفتن به خط جدید
+            }
+            writer.flush(); // اطمینان از نوشتن همه داده‌ها
+            JOptionPane.showMessageDialog(this, "Data saved successfully to " + DATA_FILE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage());
+        }
+    }
+    // Lädt die Daten aus einer Datei
+    private void loadFromFile() {
+        File file = new File(DATA_FILE);
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
+            students.clear();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 3) {
+                    try {
+                        int id = Integer.parseInt(parts[0]);
+                        String name = parts[1];
+                        int age = Integer.parseInt(parts[2]);
+                        students.add(new Student(id, name, age));
+                    } catch (NumberFormatException e) {
+                        System.err.println("Skipping invalid line: " + line);
+                    }
+                }
+            }
+            refreshDisplay();
+            JOptionPane.showMessageDialog(this, "Data loaded successfully from " + DATA_FILE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
+        }
+    }
+
 
 
 
