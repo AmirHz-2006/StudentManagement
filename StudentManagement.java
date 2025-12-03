@@ -199,6 +199,79 @@ public class StudentManagement extends JFrame {
         }
     }
 
+    // Fügt einen neuen Studenten hinzu
+    private void addStudent() {
+        String idText = idField.getText().trim();
+        String name = nameField.getText().trim();
+        String ageText = ageField.getText().trim();
+
+        if (idText.isEmpty() || name.isEmpty() || ageText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields!");
+            return;
+        }
+
+        try {
+            // تبدیل ID به int
+            int id = Integer.parseInt(idText);
+            int age = Integer.parseInt(ageText);
+
+            // بررسی محدوده ID
+            if (id <= 0) {
+                JOptionPane.showMessageDialog(this, "Please enter a positive ID!");
+                return;
+            }
+
+            if (age <= 0 || age > 100) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid age (1-100)!");
+                return;
+            }
+            // بررسی تکراری نبودن ID
+            for (Student student : students) {
+                if (student.id == id) {
+                    JOptionPane.showMessageDialog(this, "Student with this ID already exists!");
+                    return;
+                }
+            }
+
+            students.add(new Student(id, name, age));
+            refreshDisplay();
+            clearFields();
+            JOptionPane.showMessageDialog(this, "Student added successfully!");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number for age and ID!");
+        }
+    }
+//    löscht einen Student
+    private void deleteStudent() {
+        String idText = idField.getText().trim();
+
+        if (idText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter student ID to delete!");
+            return;
+        }
+        try {
+            int id = Integer.parseInt(idText);  // تبدیل به int
+            int response = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete student with ID: " + id + "?",
+                    "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) {
+                boolean removed = students.removeIf(student -> student.id == id);  // تغییر به ==
+
+                if (removed) {
+                    refreshDisplay();
+                    clearFields();
+                    JOptionPane.showMessageDialog(this, "Student deleted successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Student with ID " + id + " not found!");
+                }
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number for ID!");
+        }
+    }
+
 
 
 
