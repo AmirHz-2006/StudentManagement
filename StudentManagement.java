@@ -119,6 +119,36 @@ public class StudentManagement extends JFrame {
         add(mainPanel);
     }
 
+    // Methode zum Stylen von Komponenten
+    private JLabel createStyledLabel(String text, Color color, Font font) {
+        // Erstellt ein stilisiertes Label
+        JLabel label = new JLabel(text);
+        label.setForeground(color);
+        label.setFont(font);
+        return label;
+    }
+    // Erstellt ein stilisiertes Textfeld
+    private JTextField createStyledTextField(Font font) {
+        JTextField field = new JTextField();
+        field.setFont(font);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(166, 166, 166), 1),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)
+        ));
+        field.setBackground(Color.WHITE);
+        return field;
+    }
+    // Erstellt einen stilisierten Button
+    private JButton createStyledButton(String text, Color bgColor, Font font) {
+        JButton button = new JButton(text);
+        button.setFont(font);
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        return button;
+    }
+
 
 
 
